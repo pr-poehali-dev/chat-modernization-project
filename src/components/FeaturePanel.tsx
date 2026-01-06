@@ -5,6 +5,11 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import Icon from '@/components/ui/icon';
 import { useState } from 'react';
+import ThemeCustomizer from './ThemeCustomizer';
+import SoundSettings from './SoundSettings';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ThemeCustomizer from './ThemeCustomizer';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface Feature {
   id: string;
@@ -138,8 +143,32 @@ const FeaturePanel = ({ onClose }: FeaturePanelProps) => {
         </Button>
       </div>
 
-      <ScrollArea className="h-[calc(100vh-5rem)]">
-        <div className="p-4 space-y-6">
+      <Tabs defaultValue="features" className="h-[calc(100vh-5rem)]">
+        <TabsList className="grid w-full grid-cols-3 m-2">
+          <TabsTrigger value="features" className="text-xs">Функции</TabsTrigger>
+          <TabsTrigger value="themes" className="text-xs">Темы</TabsTrigger>
+          <TabsTrigger value="sounds" className="text-xs">Звуки</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="themes" className="h-[calc(100vh-10rem)] m-0">
+          <ScrollArea className="h-full">
+            <div className="p-4">
+              <ThemeCustomizer />
+            </div>
+          </ScrollArea>
+        </TabsContent>
+
+        <TabsContent value="sounds" className="h-[calc(100vh-10rem)] m-0">
+          <ScrollArea className="h-full">
+            <div className="p-4">
+              <SoundSettings />
+            </div>
+          </ScrollArea>
+        </TabsContent>
+
+        <TabsContent value="features" className="h-[calc(100vh-10rem)] m-0">
+          <ScrollArea className="h-full">
+            <div className="p-4 space-y-6">
           {categories.map(category => (
             <div key={category}>
               <h3 className="font-semibold mb-3 text-sm flex items-center gap-2">
@@ -190,30 +219,32 @@ const FeaturePanel = ({ onClose }: FeaturePanelProps) => {
             </div>
           ))}
 
-          <Card className="bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-sm flex items-center gap-2">
-                <Icon name="Zap" className="text-primary" size={18} />
-                Скоро
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex items-center gap-2 text-xs">
-                <Icon name="Globe" size={14} className="text-accent" />
-                <span>Языковой мост (автоперевод)</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs">
-                <Icon name="Volume2" size={14} className="text-accent" />
-                <span>Передача файлов через звук</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs">
-                <Icon name="Heart" size={14} className="text-accent" />
-                <span>Добрые чаты (благотворительность)</span>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </ScrollArea>
+              <Card className="bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/20">
+                <CardHeader>
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <Icon name="Zap" className="text-primary" size={18} />
+                    Скоро
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="flex items-center gap-2 text-xs">
+                    <Icon name="Globe" size={14} className="text-accent" />
+                    <span>Языковой мост (автоперевод)</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs">
+                    <Icon name="Volume2" size={14} className="text-accent" />
+                    <span>Передача файлов через звук</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs">
+                    <Icon name="Heart" size={14} className="text-accent" />
+                    <span>Добрые чаты (благотворительность)</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </ScrollArea>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

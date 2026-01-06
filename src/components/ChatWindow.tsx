@@ -6,6 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import Icon from '@/components/ui/icon';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import QuizGame from './QuizGame';
 
 interface Message {
   id: number;
@@ -61,6 +62,7 @@ const ChatWindow = ({ chatId }: ChatWindowProps) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState(MOCK_MESSAGES);
   const [showAI, setShowAI] = useState(true);
+  const [showQuiz, setShowQuiz] = useState(false);
 
   if (!chatId) {
     return (
@@ -122,6 +124,20 @@ const ChatWindow = ({ chatId }: ChatWindowProps) => {
           <div className="flex gap-2">
             <Tooltip>
               <TooltipTrigger asChild>
+                <Button 
+                  size="icon" 
+                  variant="ghost" 
+                  className="hover-scale"
+                  onClick={() => setShowQuiz(!showQuiz)}
+                >
+                  <Icon name="Gamepad2" className={showQuiz ? "text-primary" : "text-secondary"} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Мини-игра: Викторина</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
                 <Button size="icon" variant="ghost" className="hover-scale">
                   <Icon name="Clock" className="text-primary" />
                 </Button>
@@ -150,8 +166,9 @@ const ChatWindow = ({ chatId }: ChatWindowProps) => {
         </div>
       </div>
 
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-4">
+      <div className="flex-1 flex gap-4 overflow-hidden">
+        <ScrollArea className="flex-1 p-4">
+          <div className="space-y-4">
           {messages.map((msg, index) => (
             <div
               key={msg.id}
@@ -238,8 +255,15 @@ const ChatWindow = ({ chatId }: ChatWindowProps) => {
               </div>
             </div>
           ))}
-        </div>
-      </ScrollArea>
+          </div>
+        </ScrollArea>
+
+        {showQuiz && (
+          <div className="w-96 p-4 border-l border-border animate-slide-in-right">
+            <QuizGame onClose={() => setShowQuiz(false)} />
+          </div>
+        )}
+      </div>
 
       <div className="p-4 border-t border-border bg-card">
         <div className="flex gap-2 mb-2">

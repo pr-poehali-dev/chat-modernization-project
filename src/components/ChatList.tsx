@@ -4,6 +4,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Icon from '@/components/ui/icon';
+import { soundSystem } from '@/utils/soundNotifications';
+import { toast } from '@/components/ui/use-toast';
 
 interface Chat {
   id: number;
@@ -44,6 +46,13 @@ const ChatList = ({ selectedChat, onSelectChat, onToggleFeatures }: ChatListProp
   const filteredChats = selectedCategory
     ? MOCK_CHATS.filter(chat => chat.category === selectedCategory)
     : MOCK_CHATS;
+
+  const handleChatClick = (chat: Chat) => {
+    onSelectChat(chat.id);
+    if (chat.unread > 0) {
+      soundSystem.play(chat.category);
+    }
+  };
 
   return (
     <div className="w-80 border-r border-border bg-card flex flex-col animate-fade-in">
@@ -90,7 +99,7 @@ const ChatList = ({ selectedChat, onSelectChat, onToggleFeatures }: ChatListProp
           {filteredChats.map((chat, index) => (
             <div
               key={chat.id}
-              onClick={() => onSelectChat(chat.id)}
+              onClick={() => handleChatClick(chat)}
               className={`p-3 rounded-xl mb-2 cursor-pointer transition-all duration-200 hover:bg-muted hover-scale ${
                 selectedChat === chat.id ? 'bg-muted border-2 border-primary' : ''
               }`}
